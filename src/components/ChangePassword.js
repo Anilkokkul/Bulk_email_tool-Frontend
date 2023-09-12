@@ -8,7 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ChangePassword = () => {
-  const [searchParams, serSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const token = searchParams.get("token");
   const userId = searchParams.get("userId");
