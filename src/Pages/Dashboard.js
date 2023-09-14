@@ -9,8 +9,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { templates } = useTemplates();
 
-  console.log("Templates", templates);
-
   const handleLogout = () => {
     instance
       .get("/logout")

@@ -56,7 +56,7 @@ const BulkEmails = () => {
               <p className="text-danger">{errors.recipients}</p>
             ) : null}
             <div className=" d-flex justify-content-center m-3 ">
-              <label>Subject</label>
+              <label className="label m-2">Subject</label>
               <input
                 type="text"
                 name="subject"
@@ -68,7 +68,7 @@ const BulkEmails = () => {
               ></input>
             </div>
             <div className="d-flex justify-content-center m-3">
-              <label>Message</label>
+              <label className="label m-2">Message</label>
               <textarea
                 type="text"
                 name="template"
