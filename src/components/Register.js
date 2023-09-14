@@ -5,7 +5,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { registerSchema } from "../Schemas/userValidationSchema";
-import axios from "axios";
 import Home from "./Home";
 
 const Register = () => {
