@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Home from "./Home";
+import { instance } from "../App";
 
 const ChangePassword = () => {
   const [searchParams] = useSearchParams();
@@ -24,11 +25,11 @@ const ChangePassword = () => {
     useFormik({
       initialValues: initialValues,
       validationSchema: ChangePasswordSchema,
-      onSubmit: async (values, { resetForm }) => {
+      onSubmit: (values, { resetForm }) => {
         const newPassword = values.password;
 
-        await axios
-          .post(`${process.env.REACT_APP_BASE_URL}/reset-password`, {
+        instance
+          .post("/reset-password", {
             token,
             userId,
             newPassword,

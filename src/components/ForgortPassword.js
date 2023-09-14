@@ -3,13 +3,14 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Home from "./Home";
+import { instance } from "../App";
 
 const ForgortPassword = () => {
   const [email, setEmail] = useState("");
 
   const handleSubmit = async () => {
-    await axios
-      .post(`${process.env.REACT_APP_BASE_URL}/forgot-password`, {
+    instance
+      .post("/forgot-password", {
         email,
       })
       .then((response) => {

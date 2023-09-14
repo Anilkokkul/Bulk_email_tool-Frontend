@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
+import { instance } from "../App";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -19,9 +20,9 @@ const Register = () => {
     useFormik({
       initialValues: initialValues,
       validationSchema: registerSchema,
-      onSubmit: async (values, action) => {
-        await axios
-          .post(`${process.env.REACT_APP_BASE_URL}/register`, values)
+      onSubmit: (values, action) => {
+        instance
+          .post("/register", values)
           .then(() => {
             toast.success("You have Successfully Registered", {
               position: "top-center",

@@ -20,9 +20,7 @@ const Login = () => {
       validationSchema: loginSchema,
       onSubmit: async (values, { resetForm }) => {
         await instance
-          .post("/login", values, {
-            withCredentials: true,
-          })
+          .post("/login", values)
           .then((response) => {
             toast.success("User logged in Successfully", {
               position: "top-center",
