@@ -1,12 +1,12 @@
 import React from "react";
-import { useTemplates } from "../Context/templates.context";
+// import { useTemplates } from "../Context/templates.context";
 import { useFormik } from "formik";
 import { instance } from "../App";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const BulkEmails = () => {
-  const { templates } = useTemplates();
+  // const { templates } = useTemplates();
   const initialValues = {
     recipients: [],
     subject: "",

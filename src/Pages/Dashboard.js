@@ -2,12 +2,12 @@ import { instance } from "../App";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { useTemplates } from "../Context/templates.context";
+// import { useTemplates } from "../Context/templates.context";
 import BulkEmails from "./BulkEmails";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { templates } = useTemplates();
+  // const { templates } = useTemplates();
 
   const handleLogout = () => {
     instance
