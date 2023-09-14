@@ -2,13 +2,12 @@ import axios from "axios";
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Home from "./Home";
 
 const ForgortPassword = () => {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     await axios
       .post(`${process.env.REACT_APP_BASE_URL}/forgot-password`, {
         email,
@@ -29,6 +28,7 @@ const ForgortPassword = () => {
 
   return (
     <>
+      <Home />
       <div className="d-flex justify-content-center align-items-center w-100 bg-primary vh-100">
         <div className="bg-white p-3 rounded  w-25 ">
           <h2 className="text-center">Forgot Password ?</h2>

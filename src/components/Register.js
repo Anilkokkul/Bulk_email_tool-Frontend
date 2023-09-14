@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { registerSchema } from "../Schemas/userValidationSchema";
 import axios from "axios";
+import Home from "./Home";
 
 const Register = () => {
   const initialValues = {
@@ -21,7 +22,7 @@ const Register = () => {
       onSubmit: async (values, action) => {
         await axios
           .post(`${process.env.REACT_APP_BASE_URL}/register`, values)
-          .then((response) => {
+          .then(() => {
             toast.success("You have Successfully Registered", {
               position: "top-center",
             });
@@ -38,12 +39,13 @@ const Register = () => {
     });
   return (
     <>
+      <Home />
       <div className="d-flex justify-content-center align-items-center w-100 bg-primary vh-100">
         <div className="bg-white p-3 rounded  w-25 ">
           <h2 className="text-center">Register</h2>
           <form action="" onSubmit={handleSubmit}>
             <div className="m-3">
-              <label htmlFor="email">
+              <label htmlFor="name">
                 <strong>Name</strong>
               </label>
               <input

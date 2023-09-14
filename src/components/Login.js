@@ -1,12 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
+import { instance } from "../App";
 import { loginSchema } from "../Schemas/userValidationSchema";
-import axios from "axios";
+import Home from "./Home";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
+  const navigate = useNavigate();
   const initialValues = {
     email: "",
     password: "",
@@ -16,12 +19,17 @@ const Login = () => {
       initialValues: initialValues,
       validationSchema: loginSchema,
       onSubmit: async (values, { resetForm }) => {
-        await axios
-          .post(`${process.env.REACT_APP_BASE_URL}/login`, values)
+        await instance
+          .post("/login", values, {
+            withCredentials: true,
+          })
           .then((response) => {
             toast.success("User logged in Successfully", {
               position: "top-center",
             });
+            setTimeout(() => {
+              navigate("/dashboard");
+            }, 1000);
           })
           .catch((error) => {
             const errorMessage = error.response.data.message;
@@ -35,8 +43,9 @@ const Login = () => {
 
   return (
     <>
+      <Home />
       <div className="d-flex justify-content-center align-items-center w-100 bg-primary vh-100">
-        <div className="bg-white p-3 rounded  w-25 ">
+        <div className="bg-white p-3 rounded  w-25 w-md-50 ">
           <h2 className="text-center">Login</h2>
           <form onSubmit={handleSubmit}>
             <div className="m-3">

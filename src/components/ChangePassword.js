@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Home from "./Home";
 
 const ChangePassword = () => {
   const [searchParams] = useSearchParams();
@@ -52,6 +53,7 @@ const ChangePassword = () => {
     });
   return (
     <>
+      <Home />
       <div className="d-flex justify-content-center align-items-center w-100 bg-primary vh-100">
         <div className="bg-white p-3 rounded  w-25 ">
           <h2 className="text-center">Reset Password</h2>
