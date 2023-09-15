@@ -9,7 +9,7 @@ const ForgortPassword = () => {
 
   const handleSubmit = () => {
     instance
-      .post("/forgot-password", email)
+      .post("/forgot-password", { email })
       .then((response) => {
         const data = response.data.message;
         toast.success(data, {
