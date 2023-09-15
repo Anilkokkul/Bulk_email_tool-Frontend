@@ -7,7 +7,7 @@ import { instance } from "../App";
 const ForgortPassword = () => {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     instance
       .post("/forgot-password", {
         email,
