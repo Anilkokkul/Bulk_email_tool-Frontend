@@ -7,9 +7,11 @@ import { instance } from "../App";
 const ForgortPassword = () => {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     instance
-      .post("/forgot-password", { email })
+      .post("/forgot-password", {
+        email,
+      })
       .then((response) => {
         const data = response.data.message;
         toast.success(data, {
