@@ -7,23 +7,29 @@ import { instance } from "../App";
 const ForgortPassword = () => {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = () => {
-    instance
-      .post("/forgot-password", {
-        email,
-      })
-      .then((response) => {
-        const data = response.data.message;
-        toast.success(data, {
-          position: "top-center",
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    try {
+      instance
+        .post("/forgot-password", {
+          email,
+        })
+        .then((response) => {
+          const data = response.data.message;
+          console.log(data);
+          toast.success(data, {
+            position: "top-center",
+          });
+        })
+        .catch((error) => {
+          const errorMessage = error.response.data.message;
+          toast.warn(errorMessage, {
+            position: "top-center",
+          });
         });
-      })
-      .catch((error) => {
-        const errorMessage = error.response.data.message;
-        toast.warn(errorMessage, {
-          position: "top-center",
-        });
-      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
