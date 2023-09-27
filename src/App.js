@@ -9,7 +9,6 @@ import ForgortPassword from "./components/ForgortPassword";
 import ChangePassword from "./components/ChangePassword";
 import Dashboard from "./Pages/Dashboard";
 import axios from "axios";
-import MailingLists from "./components/MailingLists";
 
 export const instance = axios.create({
   withCredentials: true,
