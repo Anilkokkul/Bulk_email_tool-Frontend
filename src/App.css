@@ -5,3 +5,13 @@
 textarea {
   height: 300px;
 }
+.templateContent {
+  max-height: 120px;
+  overflow: auto;
+}
+
+.Templates {
+  overflow: auto;
+  width: 350px;
+  height: 80vh;
+}

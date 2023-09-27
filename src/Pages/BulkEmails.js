@@ -1,39 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // import { useTemplates } from "../Context/templates.context";
 import { useFormik } from "formik";
 import { instance } from "../App";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const BulkEmails = () => {
+const BulkEmails = (props) => {
   // const { templates } = useTemplates();
+  const [list, setlist] = useState(props.userList.emails);
+  const [template, setTemplate] = useState(props.template);
+
   const initialValues = {
-    recipients: [],
-    subject: "",
-    template: "",
+    recipients: list || [],
+    subject: template.subject || "",
+    template: template.body || "",
   };
+  useEffect(() => {
+    setlist(props.userList.emails);
+    setTemplate(props.template);
+  }, [props]);
 
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
-    useFormik({
-      initialValues: initialValues,
-      onSubmit: (values, { resetForm }) => {
-        instance
-          .post("/bulk-email-sending", values)
-          .then((Response) => {
-            toast.success(Response.data.message, {
-              position: "top-center",
-            });
-          })
-          .catch((error) => {
-            const errorMessage = error.response.data.message;
-            toast.warn(errorMessage, {
-              position: "top-center",
-            });
+  // useEffect(() => {
+  //   setlist(initialValues.recipients);
+  // }, [initialValues.recipients]);
+
+  const { values, handleChange, handleBlur, handleSubmit } = useFormik({
+    enableReinitialize: true,
+    initialValues: initialValues,
+    onSubmit: (values, { resetForm }) => {
+      instance
+        .post("/bulk-email-sending", values)
+        .then((Response) => {
+          toast.success(Response.data.message, {
+            position: "top-center",
           });
-
-        resetForm();
-      },
-    });
+        })
+        .catch((error) => {
+          const errorMessage = error.response.data.message;
+          toast.warn(errorMessage, {
+            position: "top-center",
+          });
+        });
+      resetForm();
+      setlist([]);
+      setTemplate({});
+      props.handleClear();
+    },
+  });
 
   return (
     <>
@@ -52,9 +65,7 @@ const BulkEmails = () => {
                 onBlur={handleBlur}
               ></input>
             </div>
-            {touched.recipients && errors.recipients ? (
-              <p className="text-danger">{errors.recipients}</p>
-            ) : null}
+
             <div className=" d-flex justify-content-center m-3 ">
               <label className="label m-2">Subject</label>
               <input

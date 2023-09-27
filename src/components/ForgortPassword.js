@@ -16,7 +16,7 @@ const ForgortPassword = () => {
         })
         .then((response) => {
           const data = response.data.message;
-          console.log(data);
+
           toast.success(data, {
             position: "top-center",
           });
