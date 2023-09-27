@@ -27,7 +27,7 @@ const MailingLists = (props) => {
           navigate("/");
         }, 1500);
       });
-  }, []);
+  });
 
   const handleDelete = (id) => {
     instance
@@ -96,26 +96,25 @@ const MailingLists = (props) => {
       </div>
       <h3>Campaign Lists</h3>
       <ul className="list-group">
-        {mailingLists &&
-          mailingLists.map((list) => (
-            <li key={list._id} className="list-group-item ">
-              <b>{list.name}</b> - {list.emails.join(",")}
-              <div>
-                <button
-                  onClick={() => props.updateList(list)}
-                  className="btn btn-primary  btn-sm m-1"
-                >
-                  Select
-                </button>
-                <button
-                  onClick={() => handleDelete(list._id)}
-                  className="btn btn-danger btn-sm m-1"
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
+        {mailingLists.map((list) => (
+          <li key={list._id} className="list-group-item ">
+            <b>{list.name}</b> - {list.emails.join(",")}
+            <div>
+              <button
+                onClick={() => props.updateList(list)}
+                className="btn btn-primary  btn-sm m-1"
+              >
+                Select
+              </button>
+              <button
+                onClick={() => handleDelete(list._id)}
+                className="btn btn-danger btn-sm m-1"
+              >
+                Delete
+              </button>
+            </div>
+          </li>
+        ))}
       </ul>
       <ToastContainer />
     </div>
