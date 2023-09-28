@@ -67,7 +67,7 @@ const Dashboard = () => {
           </div>
         </nav>
       </div>
-      <div className=" d-flex justify-content-center">
+      <div className=" d-flex justify-content-center m-4">
         <div className="m-3 text-center bg-light border-black p-3 rounded-3">
           <MailingLists updateList={handleUpdateList} />
         </div>

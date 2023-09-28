@@ -39,7 +39,11 @@ const TemplatesList = ({ handleTemplate }) => {
       <div className="Templates">
         {templates.map((template) => {
           return (
-            <Card className="m-3 p-0 text-start" key={template._id}>
+            <Card
+              className="m-3 p-0 text-start"
+              style={{ width: "18rem" }}
+              key={template._id}
+            >
               <Card.Body>
                 <Card.Title>{template.subject}</Card.Title>
                 <Card.Text className="templateContent">
