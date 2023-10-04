@@ -51,7 +51,7 @@ const Dashboard = () => {
       <div className="m-4">
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <div className="container-fluid">
-            <a href="/" className="navbar-brand">
+            <a href="/" className="navbar-brand fw-bolder">
               MailMegaPro
             </a>
 
