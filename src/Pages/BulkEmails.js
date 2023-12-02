@@ -4,6 +4,8 @@ import { useFormik } from "formik";
 import { instance } from "../App";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// eslint-disable-next-line no-unused-vars
+import ReactQuill from "react-quill";
 
 const BulkEmails = (props) => {
   // const { templates } = useTemplates();
@@ -48,11 +50,14 @@ const BulkEmails = (props) => {
     },
   });
 
+  const editorStyle = {
+    height: "300px", // Set your desired height here
+  };
   return (
     <>
-      <div className=" d-flex justify-content-center vh-100  ">
+      <div className=" d-flex justify-content-center vh-100">
         <div className="d-flex justify-content-center">
-          <form onSubmit={handleSubmit} className="templateContainer">
+          <form onSubmit={handleSubmit} className="templateContainer ">
             <div className=" d-flex justify-content-center m-3 align-content-center  ">
               <label className="label m-2">To</label>
               <input
@@ -78,38 +83,32 @@ const BulkEmails = (props) => {
                 onBlur={handleBlur}
               ></input>
             </div>
-            <div className="d-flex justify-content-center m-3">
+            <div className="d-flex justify-content-center m-3 quill">
               <label className="label m-2">Message</label>
-              <textarea
-                type="text"
-                name="template"
-                className=" form-control "
-                placeholder="Type message here"
-                value={values.template}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              ></textarea>
+              <div className="w-100 ">
+                <ReactQuill
+                  theme="snow"
+                  value={values.template}
+                  onChange={(content) =>
+                    handleChange({
+                      target: { name: "template", value: content },
+                    })
+                  }
+                  onBlur={(content) =>
+                    handleChange({
+                      target: { name: "template", value: content },
+                    })
+                  }
+                />
+              </div>
             </div>
-            <div className="text-end m-3">
+            <div className="text-end bottom-0">
               <button type="submit" className="btn btn-outline-primary btn-lg ">
                 Send
               </button>
             </div>
           </form>
         </div>
-        {/* <div>
-          <select className="custom-select">
-            <option>Saved Templates</option>
-            {templates &&
-              templates.map((template, index) => {
-                return (
-                  <option key={index} value={template.subject}>
-                    {template.subject}
-                  </option>
-                );
-              })}
-          </select>
-        </div> */}
       </div>
       <ToastContainer />
     </>

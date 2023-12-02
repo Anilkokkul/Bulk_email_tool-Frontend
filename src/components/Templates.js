@@ -10,7 +10,6 @@ import CreateTemplate from "./CreateTemplate";
 
 const TemplatesList = ({ handleTemplate }) => {
   const { templates, fetchTemp } = useTemplates();
-  console.log(templates);
 
   const handleDelete = (id) => {
     instance

@@ -30,6 +30,7 @@ const Login = () => {
             }, 1000);
           })
           .catch((error) => {
+            console.log(error);
             const errorMessage = error.response.data.message;
             toast.warn(errorMessage, {
               position: "top-center",

@@ -27,7 +27,7 @@ const MailingLists = (props) => {
           navigate("/");
         }, 1500);
       });
-  });
+  }, []);
 
   const handleDelete = (id) => {
     instance

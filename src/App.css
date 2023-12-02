@@ -15,3 +15,10 @@ textarea {
   width: 350px;
   height: 80vh;
 }
+
+.quill {
+  height: 250px;
+}
+.ql-container {
+  height: 210px !important;
+}
