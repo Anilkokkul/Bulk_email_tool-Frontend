@@ -44,7 +44,6 @@ const MailingLists = (props) => {
         });
       })
       .catch((error) => {
-        console.log("Error deleting mailing list:", error);
         toast.error(error.response.data.message, {
           position: "top-center",
           autoClose: 1500,

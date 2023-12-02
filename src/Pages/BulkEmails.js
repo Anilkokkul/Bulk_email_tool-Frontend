@@ -49,10 +49,6 @@ const BulkEmails = (props) => {
       props.handleClear();
     },
   });
-
-  const editorStyle = {
-    height: "300px", // Set your desired height here
-  };
   return (
     <>
       <div className=" d-flex justify-content-center vh-100">
