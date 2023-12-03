@@ -4,6 +4,8 @@ import { instance } from "../App";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 
 const MailingLists = (props) => {
   const [mailingLists, setMailingLists] = useState([]);
@@ -89,32 +91,44 @@ const MailingLists = (props) => {
           value={emails}
           onChange={(e) => setEmails(e.target.value)}
         />
-        <button onClick={createMailingList} className="btn btn-success m-3 ">
+        <button onClick={createMailingList} className="btn btn-success mt-3 ">
           Create
         </button>
       </div>
       <h3>Campaign Lists</h3>
-      <ul className="list-group">
-        {mailingLists.map((list) => (
-          <li key={list._id} className="list-group-item ">
-            <b>{list.name}</b> - {list.emails.join(",")}
-            <div>
-              <button
-                onClick={() => props.updateList(list)}
-                className="btn btn-primary  btn-sm m-1"
-              >
-                Select
-              </button>
-              <button
-                onClick={() => handleDelete(list._id)}
-                className="btn btn-danger btn-sm m-1"
-              >
-                Delete
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div className=" overflow-auto">
+        {mailingLists.map((list) => {
+          return (
+            <Card className="m-3" key={list._id}>
+              <Card.Body>
+                <Card.Title>{list.name}</Card.Title>
+                <Card.Text
+                  className="overflow-auto"
+                  style={{ maxHeight: "100px" }}
+                >
+                  {list.emails.join(",")}
+                </Card.Text>
+                <Button
+                  size="sm"
+                  className="ms-2"
+                  variant="primary"
+                  onClick={() => props.updateList(list)}
+                >
+                  Select
+                </Button>
+                <Button
+                  size="sm"
+                  className="ms-2"
+                  variant="danger"
+                  onClick={() => handleDelete(list._id)}
+                >
+                  Delete
+                </Button>
+              </Card.Body>
+            </Card>
+          );
+        })}
+      </div>
       <ToastContainer />
     </div>
   );

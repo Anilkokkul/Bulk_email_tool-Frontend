@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Home from "./Home";
 import { instance } from "../App";
 
-const ForgortPassword = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState("");
 
   const handleSubmit = (e) => {
@@ -64,4 +64,4 @@ const ForgortPassword = () => {
   );
 };
 
-export default ForgortPassword;
+export default ForgotPassword;

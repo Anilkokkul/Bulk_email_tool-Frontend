@@ -6,10 +6,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // eslint-disable-next-line no-unused-vars
 import ReactQuill from "react-quill";
+import { formats, modules } from "./QuillData";
 
 const BulkEmails = (props) => {
   // const { templates } = useTemplates();
-  const [list, setlist] = useState(props.userList.emails);
+  const [list, setList] = useState(props.userList.emails);
   const [template, setTemplate] = useState(props.template);
 
   const initialValues = {
@@ -18,12 +19,12 @@ const BulkEmails = (props) => {
     template: template.body || "",
   };
   useEffect(() => {
-    setlist(props.userList.emails);
+    setList(props.userList.emails);
     setTemplate(props.template);
   }, [props]);
 
   // useEffect(() => {
-  //   setlist(initialValues.recipients);
+  //   setList(initialValues.recipients);
   // }, [initialValues.recipients]);
 
   const { values, handleChange, handleBlur, handleSubmit } = useFormik({
@@ -44,17 +45,17 @@ const BulkEmails = (props) => {
           });
         });
       resetForm();
-      setlist([]);
+      setList([]);
       setTemplate({});
       props.handleClear();
     },
   });
   return (
     <>
-      <div className=" d-flex justify-content-center vh-100">
-        <div className="d-flex justify-content-center">
+      <div className=" d-flexr">
+        <div>
           <form onSubmit={handleSubmit} className="templateContainer ">
-            <div className=" d-flex justify-content-center m-3 align-content-center  ">
+            <div className=" d-flex justify-content-center m-3 ">
               <label className="label m-2">To</label>
               <input
                 className=" form-control "
@@ -79,12 +80,14 @@ const BulkEmails = (props) => {
                 onBlur={handleBlur}
               ></input>
             </div>
-            <div className="d-flex justify-content-center m-3 quill">
-              <label className="label m-2">Message</label>
-              <div className="w-100 ">
+            <div className="m-3 text-start">
+              <label className="label m-2">Message :</label>
+              <div>
                 <ReactQuill
                   theme="snow"
+                  modules={modules}
                   value={values.template}
+                  formats={formats}
                   onChange={(content) =>
                     handleChange({
                       target: { name: "template", value: content },

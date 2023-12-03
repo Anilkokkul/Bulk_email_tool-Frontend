@@ -47,9 +47,9 @@ const Dashboard = () => {
   };
 
   return (
-    <>
-      <div className="m-4">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <div className="p-3">
+      <div>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light mb-3 rounded">
           <div className="container-fluid">
             <a href="/" className="navbar-brand fw-bolder">
               MailMegaPro
@@ -67,24 +67,23 @@ const Dashboard = () => {
           </div>
         </nav>
       </div>
-      <div className=" d-flex justify-content-center m-4">
-        <div className="m-3 text-center bg-light border-black p-3 rounded-3">
+      <div className="d-flex justify-content-center gap-3 px-3">
+        <div className=" text-center bg-light border-black p-3 rounded-3 col-xl-3  col-md-4 ">
           <MailingLists updateList={handleUpdateList} />
         </div>
-        <div className="m-3 text-center bg-light border-black rounded-3">
+        <div className=" text-center bg-light border-black rounded-3 col-xl-6 col-md-6">
           <BulkEmails
             userList={list}
             template={template}
             handleClear={handleClear}
           />
         </div>
-        <div className="m-3 text-center bg-light border-black rounded-3">
+        <div className="text-center bg-light border-black rounded-3 col-xl-3 col-md-4">
           <TemplatesList handleTemplate={handleTemplate} />
         </div>
       </div>
-
       <ToastContainer />
-    </>
+    </div>
   );
 };
 

@@ -32,17 +32,13 @@ const TemplatesList = ({ handleTemplate }) => {
   return (
     <>
       <h4 className="mt-3">Saved Templates</h4>
-      <div className="btn btn-success container-fluid w-75 p-0 ">
+      <div className="btn btn-success container-fluid w-75 p-0 mb-3 ">
         <CreateTemplate />
       </div>
       <div className="Templates">
         {templates.map((template) => {
           return (
-            <Card
-              className="m-3 p-0 text-start"
-              style={{ width: "18rem" }}
-              key={template._id}
-            >
+            <Card className="mx-3 mb-3 p-0 text-start" key={template._id}>
               <Card.Body>
                 <Card.Title>{template.subject}</Card.Title>
                 <Card.Text className="templateContent">
@@ -51,6 +47,7 @@ const TemplatesList = ({ handleTemplate }) => {
                 <Button
                   className="ms-2"
                   variant="primary"
+                  size="sm"
                   onClick={() => handleTemplate(template)}
                 >
                   Select
@@ -59,6 +56,7 @@ const TemplatesList = ({ handleTemplate }) => {
                   className="ms-2"
                   variant="danger"
                   onClick={() => handleDelete(template._id)}
+                  size="sm"
                 >
                   Delete
                 </Button>

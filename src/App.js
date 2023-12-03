@@ -6,7 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import ForgortPassword from "./components/ForgortPassword";
+import ForgotPassword from "./components/ForgotPassword";
 import ChangePassword from "./components/ChangePassword";
 import Dashboard from "./Pages/Dashboard";
 import axios from "axios";
@@ -23,7 +23,7 @@ function App() {
         <Routes>
           <Route path="" element={<Home />}></Route>
           <Route path="/reset-password" element={<ChangePassword />}></Route>
-          <Route path="/reset" element={<ForgortPassword />}></Route>
+          <Route path="/reset" element={<ForgotPassword />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
