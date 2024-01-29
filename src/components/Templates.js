@@ -10,7 +10,7 @@ import CreateTemplate from "./CreateTemplate";
 
 const TemplatesList = ({ handleTemplate }) => {
   const { templates, fetchTemp } = useTemplates();
-
+  console.log(templates);
   const handleDelete = (id) => {
     instance
       .delete(`/deleteTemplate/${id}`)
@@ -36,7 +36,7 @@ const TemplatesList = ({ handleTemplate }) => {
         <CreateTemplate />
       </div>
       <div className="Templates">
-        {templates.map((template) => {
+        {templates?.map((template) => {
           return (
             <Card className="mx-3 mb-3 p-0 text-start" key={template._id}>
               <Card.Body>

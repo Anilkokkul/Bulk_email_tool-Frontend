@@ -102,7 +102,7 @@ const BulkEmails = (props) => {
               </div>
             </div>
             <div className="text-end bottom-0">
-              <button type="submit" className="btn btn-outline-primary btn-lg ">
+              <button type="submit" className="btn btn-outline-primary btn-lg mx-3">
                 Send
               </button>
             </div>
