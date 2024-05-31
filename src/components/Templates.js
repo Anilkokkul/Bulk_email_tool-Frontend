@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useTemplates } from "../Context/templates.context";
+import { useTemplates, fetchTemp } from "../Context/templates.context";
 import { instance } from "../App";
 import CreateTemplate from "./CreateTemplate";
 
 const TemplatesList = ({ handleTemplate }) => {
   const { templates, fetchTemp } = useTemplates();
-  console.log(templates);
+
+  useEffect(() => {
+    fetchTemp();
+  }, []);
+
   const handleDelete = (id) => {
     instance
       .delete(`/deleteTemplate/${id}`)

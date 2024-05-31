@@ -95,8 +95,8 @@ const MailingLists = (props) => {
           Create
         </button>
       </div>
-      <h3>Campaign Lists</h3>
-      <div className=" overflow-auto">
+      <h3>Campaign Lists </h3>
+      <div className=" overflow-auto ">
         {mailingLists.map((list) => {
           return (
             <Card className="m-3" key={list._id}>

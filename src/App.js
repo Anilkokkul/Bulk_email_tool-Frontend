@@ -21,10 +21,9 @@ function App() {
     <BrowserRouter>
       <div className="App w-100">
         <Routes>
-          <Route path="" element={<Home />}></Route>
           <Route path="/reset-password" element={<ChangePassword />}></Route>
           <Route path="/reset" element={<ForgotPassword />}></Route>
-          <Route path="/login" element={<Login />}></Route>
+          <Route path="/" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
         </Routes>
