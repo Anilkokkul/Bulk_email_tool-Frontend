@@ -40,7 +40,7 @@ const Register = () => {
   return (
     <>
       <Home />
-      <div className="d-flex justify-content-center align-items-center w-100 bg-primary vh-100">
+      <div className="d-flex justify-content-center align-items-center w-100 bg-primary login-page">
         <div className="bg-white p-3 rounded  w-25 ">
           <h2 className="text-center">Register</h2>
           <form action="" onSubmit={handleSubmit}>
@@ -117,7 +117,7 @@ const Register = () => {
             </button>
           </form>
           <Link
-            to={"/login"}
+            to={"/"}
             className="btn mt-4 btn-outline-success rounded text-decoration-none w-100 rounded"
           >
             Login
