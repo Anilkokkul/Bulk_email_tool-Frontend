@@ -35,7 +35,7 @@ const ForgotPassword = () => {
   return (
     <>
       <Home />
-      <div className="d-flex justify-content-center align-items-center w-100 bg-primary vh-100">
+      <div className="d-flex justify-content-center align-items-center w-100 bg-primary login-page">
         <div className="bg-white p-3 rounded  w-25 ">
           <h2 className="text-center">Forgot Password ?</h2>
           <form onSubmit={handleSubmit}>
