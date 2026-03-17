@@ -41,12 +41,12 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] overflow-hidden">
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-slate-950 transition-colors duration-300 overflow-hidden">
       {/* Navigation */}
       <motion.nav 
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="sticky top-0 z-50 w-full glass border-b border-slate-200/50 px-6 py-4"
+        className="sticky top-0 z-50 w-full glass dark:bg-slate-900/60 border-b border-slate-200/50 dark:border-slate-800/50 px-6 py-4"
       >
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2 group">
@@ -143,7 +143,7 @@ const Home = () => {
       </section>
 
       {/* Features Grid */}
-      <section className="py-24 px-6 relative bg-white border-t border-slate-100">
+      <section className="py-24 px-6 relative bg-white dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">Experience the Power of Efficiency</h2>
