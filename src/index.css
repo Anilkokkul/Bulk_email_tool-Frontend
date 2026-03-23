@@ -116,6 +116,33 @@ body {
   @apply text-slate-500 font-bold !important;
 }
 
+.custom-quill {
+  position: relative;
+}
+
+.custom-quill .ql-toolbar.ql-snow {
+  position: relative;
+  z-index: 30;
+  border: 0 !important;
+  border-bottom: 0 !important;
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+}
+
+.custom-quill .ql-container.ql-snow {
+  position: relative;
+  z-index: 10;
+  border: 0 !important;
+  border-top: 0 !important;
+  border-bottom-left-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+  overflow: hidden;
+}
+
+.custom-quill .ql-editor {
+  min-height: 0 !important;
+}
+
 .ql-snow.ql-toolbar button:hover .ql-stroke,
 .ql-snow.ql-toolbar button:hover .ql-fill,
 .ql-snow.ql-toolbar button.ql-active .ql-stroke,
@@ -135,6 +162,7 @@ body {
 .ql-snow .ql-picker-options {
   position: absolute !important;
   z-index: 100000 !important;
+  pointer-events: auto !important;
   @apply rounded-2xl shadow-xl border border-slate-200 bg-white !important;
 }
 

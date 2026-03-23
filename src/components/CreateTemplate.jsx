@@ -28,7 +28,7 @@ function CreateTemplate() {
       toast.warn("Please fill all fields", { position: "top-center" });
       return;
     }
-    
+
     setIsSaving(true);
     try {
       const response = await instance.post("/templates", { subject: title, body: content });
@@ -50,8 +50,8 @@ function CreateTemplate() {
 
   return (
     <>
-      <button 
-        className="btn-premium w-full py-4 flex items-center justify-center gap-3 group shadow-lg shadow-primary-500/10 active:scale-95 transition-all" 
+      <button
+        className="btn-premium w-full py-4 flex items-center justify-center gap-3 group shadow-lg shadow-primary-500/10 active:scale-95 transition-all"
         onClick={handleShow}
       >
         <FilePlus size={20} className="group-hover:scale-110 group-hover:rotate-6 transition-transform" />
@@ -68,7 +68,7 @@ function CreateTemplate() {
               onClick={handleClose}
               className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
             />
-            
+
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 40 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -76,7 +76,7 @@ function CreateTemplate() {
               className="relative w-full max-w-3xl glass dark:bg-slate-900 p-10 rounded-[2.5rem] shadow-2xl border border-white dark:border-slate-800 overflow-hidden"
             >
               <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-primary-500 to-accent-500" />
-              
+
               <div className="flex justify-between items-center mb-10">
                 <div className="flex items-center gap-3">
                   <div className="p-2.5 rounded-2xl bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400">
@@ -87,7 +87,7 @@ function CreateTemplate() {
                     <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Email Blueprint</p>
                   </div>
                 </div>
-                <button 
+                <button
                   onClick={handleClose}
                   className="p-3 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 active:scale-90"
                 >
@@ -117,7 +117,7 @@ function CreateTemplate() {
                       formats={formats}
                       value={content}
                       onChange={setContent}
-                      className="flex-1 bg-white dark:bg-slate-900 h-full overflow-hidden custom-quill dark:text-slate-200"
+                      className="flex-1 bg-white dark:bg-slate-900 h-full custom-quill dark:text-slate-200"
                       placeholder="Describe your design or paste HTML structure here..."
                     />
                   </div>

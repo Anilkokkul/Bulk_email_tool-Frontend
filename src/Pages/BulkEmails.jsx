@@ -46,7 +46,7 @@ const BulkEmails = (props) => {
   const addRecipient = (email) => {
     const trimmed = email.trim();
     if (!trimmed) return;
-    
+
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(trimmed)) {
@@ -77,7 +77,7 @@ const BulkEmails = (props) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData("text");
     const emails = pastedData.split(/[,\n]/).map(e => e.trim()).filter(e => e);
-    
+
     const validEmails = emails.filter(email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
     if (validEmails.length < emails.length) {
       toast.warn("Some invalid emails were skipped", { position: "bottom-right", autoClose: 2000 });
@@ -113,8 +113,8 @@ const BulkEmails = (props) => {
                 {values.recipients.length} Total
               </span>
             </label>
-            
-            <div 
+
+            <div
               onClick={() => inputRef.current?.focus()}
               className="min-h-[100px] p-2 rounded-[1.5rem] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-inner focus-within:ring-4 focus-within:ring-primary-50 dark:focus-within:ring-primary-900/20 focus-within:border-primary-200 dark:focus-within:border-primary-800 transition-all flex flex-wrap gap-2 items-start cursor-text overflow-y-auto max-h-[200px] custom-scrollbar"
             >
@@ -142,7 +142,7 @@ const BulkEmails = (props) => {
                   </motion.div>
                 ))}
               </AnimatePresence>
-              
+
               <input
                 ref={inputRef}
                 className="flex-1 min-w-[200px] bg-transparent border-none outline-none py-2 px-2 text-sm text-slate-700 dark:text-slate-200 placeholder:text-slate-300 dark:placeholder:text-slate-600"
@@ -183,7 +183,7 @@ const BulkEmails = (props) => {
 
         <div className="space-y-2 flex-1 flex flex-col min-h-[350px]">
           <label className="text-xs font-bold text-slate-500 dark:text-slate-400 ml-1">Message Content</label>
-          <div className="flex-1 bg-white dark:bg-slate-900 rounded-[1.5rem] border border-slate-200 dark:border-slate-800 shadow-inner focus-within:ring-4 focus-within:ring-primary-50 dark:focus-within:ring-primary-900/20 focus-within:border-primary-200 dark:focus-within:border-primary-800 transition-all flex flex-col">
+          <div className="flex-1 bg-white dark:bg-slate-900 rounded-[1.5rem] border border-slate-200 dark:border-slate-800 shadow-inner focus-within:ring-4 focus-within:ring-primary-50 dark:focus-within:ring-primary-900/20 focus-within:border-primary-200 dark:focus-within:border-primary-800 transition-all flex flex-col overflow-hidden">
             <ReactQuill
               theme="snow"
               modules={modules}
@@ -213,9 +213,9 @@ const BulkEmails = (props) => {
             <Trash2 size={18} className="group-hover:scale-110 transition-transform" />
             Discard Draft
           </button>
-          
-          <motion.button 
-            type="submit" 
+
+          <motion.button
+            type="submit"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             disabled={isSubmitting || !values.recipients.length || !values.subject}
