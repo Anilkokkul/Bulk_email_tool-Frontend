@@ -183,13 +183,13 @@ const BulkEmails = (props) => {
 
         <div className="space-y-2 flex-1 flex flex-col min-h-[350px]">
           <label className="text-xs font-bold text-slate-500 dark:text-slate-400 ml-1">Message Content</label>
-          <div className="flex-1 bg-white dark:bg-slate-900 rounded-[1.5rem] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-inner focus-within:ring-4 focus-within:ring-primary-50 dark:focus-within:ring-primary-900/20 focus-within:border-primary-200 dark:focus-within:border-primary-800 transition-all flex flex-col">
+          <div className="flex-1 bg-white dark:bg-slate-900 rounded-[1.5rem] border border-slate-200 dark:border-slate-800 shadow-inner focus-within:ring-4 focus-within:ring-primary-50 dark:focus-within:ring-primary-900/20 focus-within:border-primary-200 dark:focus-within:border-primary-800 transition-all flex flex-col">
             <ReactQuill
               theme="snow"
               modules={modules}
               value={values.template}
               formats={formats}
-              className="flex-1 bg-white dark:bg-slate-900 h-full overflow-hidden custom-quill dark:text-slate-200"
+              className="flex-1 bg-white dark:bg-slate-900 h-full custom-quill dark:text-slate-200"
               placeholder="Start typing your masterpiece..."
               onChange={(content) =>
                 handleChange({

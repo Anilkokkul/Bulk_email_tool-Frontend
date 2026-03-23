@@ -12,7 +12,7 @@ import { ThemeProvider } from "./Context/theme.context";
 
 export const instance = axios.create({
   withCredentials: true,
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: import.meta.env.VITE_BASE_URL,
 });
 
 function App() {

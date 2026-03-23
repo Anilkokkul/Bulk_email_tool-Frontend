@@ -1,4 +1,6 @@
 import { useState } from "react";
+import ReactQuill from "react-quill";
+import { formats, modules } from "../Pages/QuillData";
 import { instance } from "../App";
 import { useTemplates } from "../Context/templates.context";
 import { ToastContainer, toast } from "react-toastify";
@@ -71,7 +73,7 @@ function CreateTemplate() {
               initial={{ opacity: 0, scale: 0.9, y: 40 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 40 }}
-              className="relative w-full max-w-xl glass dark:bg-slate-900 p-10 rounded-[2.5rem] shadow-2xl border border-white dark:border-slate-800 overflow-hidden"
+              className="relative w-full max-w-3xl glass dark:bg-slate-900 p-10 rounded-[2.5rem] shadow-2xl border border-white dark:border-slate-800 overflow-hidden"
             >
               <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-primary-500 to-accent-500" />
               
@@ -106,14 +108,19 @@ function CreateTemplate() {
                   />
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2 flex flex-col h-64">
                   <label className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest ml-1">Blueprint Body</label>
-                  <textarea
-                    placeholder="Describe your design or paste HTML structure here..."
-                    className="input-premium h-48 resize-none py-4 font-medium bg-white dark:bg-slate-800 dark:border-slate-700 dark:text-white"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                  />
+                  <div className="flex-1 bg-white dark:bg-slate-900 rounded-[1.5rem] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-inner focus-within:ring-4 focus-within:ring-primary-50 dark:focus-within:ring-primary-900/20 focus-within:border-primary-200 dark:focus-within:border-primary-800 transition-all flex flex-col">
+                    <ReactQuill
+                      theme="snow"
+                      modules={modules}
+                      formats={formats}
+                      value={content}
+                      onChange={setContent}
+                      className="flex-1 bg-white dark:bg-slate-900 h-full overflow-hidden custom-quill dark:text-slate-200"
+                      placeholder="Describe your design or paste HTML structure here..."
+                    />
+                  </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
