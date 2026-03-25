@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { createContext, useContext } from "react";
 import { instance } from "../App";
 
@@ -9,10 +9,7 @@ export const useTemplates = () => useContext(templateContext);
 const TemplatesContextProvider = ({ children }) => {
   const [templates, setTemplates] = useState([]);
 
-  useEffect(() => {
-    fetchTemp();
-  }, []);
-  const fetchTemp = () => {
+  const fetchTemp = useCallback(() => {
     instance
       .get("/templates")
       .then((response) => {
@@ -21,7 +18,11 @@ const TemplatesContextProvider = ({ children }) => {
       .catch((error) => {
         console.log(error.response);
       });
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchTemp();
+  }, [fetchTemp]);
 
   const value = {
     templates,
