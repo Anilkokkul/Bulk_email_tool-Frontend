@@ -21,7 +21,12 @@ const BulkEmails = (props) => {
   };
 
   useEffect(() => {
-    setList(props.userList.emails || []);
+    let importedEmails = props.userList.emails || [];
+    if (importedEmails.length > 50) {
+      toast.warn("Imported list truncated to 50 recipients (Demo limit)", { position: "top-center" });
+      importedEmails = importedEmails.slice(0, 50);
+    }
+    setList(importedEmails);
     setTemplate(props.template || {});
   }, [props]);
 
@@ -29,6 +34,10 @@ const BulkEmails = (props) => {
     enableReinitialize: true,
     initialValues: initialValues,
     onSubmit: async (values) => {
+      if (values.recipients.length > 50) {
+        toast.error("Demo app limit: Maximum 50 recipients allowed per campaign.", { position: "top-center" });
+        return;
+      }
       try {
         const response = await instance.post("/bulk-email-sending", values);
         toast.success(response.data.message, { position: "top-center" });
@@ -46,6 +55,12 @@ const BulkEmails = (props) => {
   const addRecipient = (email) => {
     const trimmed = email.trim();
     if (!trimmed) return;
+
+    if (values.recipients.length >= 50) {
+      toast.warn("Demo limit: Maximum 50 recipients allowed.", { position: "bottom-right", autoClose: 3000 });
+      setInputValue("");
+      return;
+    }
 
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -83,7 +98,14 @@ const BulkEmails = (props) => {
       toast.warn("Some invalid emails were skipped", { position: "bottom-right", autoClose: 2000 });
     }
 
-    const uniqueNewEmails = validEmails.filter(e => !values.recipients.includes(e));
+    let uniqueNewEmails = validEmails.filter(e => !values.recipients.includes(e));
+    
+    if (values.recipients.length + uniqueNewEmails.length > 50) {
+      toast.warn("Demo limit: Maximum 50 recipients allowed. List truncated.", { position: "bottom-right", autoClose: 3000 });
+      const allowedCount = 50 - values.recipients.length;
+      uniqueNewEmails = uniqueNewEmails.slice(0, allowedCount > 0 ? allowedCount : 0);
+    }
+
     setFieldValue("recipients", [...values.recipients, ...uniqueNewEmails]);
   };
 
@@ -109,8 +131,8 @@ const BulkEmails = (props) => {
                 <User size={14} className="text-primary-500 dark:text-primary-400" />
                 Recipients List
               </div>
-              <span className="text-[10px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full text-slate-600 dark:text-slate-400 font-black">
-                {values.recipients.length} Total
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${values.recipients.length >= 50 ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}`}>
+                {values.recipients.length} / 50 Max
               </span>
             </label>
 
@@ -218,7 +240,7 @@ const BulkEmails = (props) => {
             type="submit"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            disabled={isSubmitting || !values.recipients.length || !values.subject}
+            disabled={isSubmitting || !values.recipients.length || !values.subject || values.recipients.length > 50}
             className="btn-premium flex items-center gap-3 h-14 px-12 shadow-2xl shadow-primary-200 disabled:grayscale disabled:opacity-50 disabled:scale-100 rounded-2xl"
           >
             <Send size={20} className={isSubmitting ? "animate-bounce" : "group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"} />

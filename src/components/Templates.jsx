@@ -5,11 +5,12 @@ import { useTemplates } from "../Context/templates.context";
 import { instance } from "../App";
 import CreateTemplate from "./CreateTemplate";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, CheckCircle2, Search, FileText } from "lucide-react";
+import { Trash2, CheckCircle2, Search, FileText, Eye, X } from "lucide-react";
 
 const TemplatesList = ({ handleTemplate }) => {
   const { templates, fetchTemp } = useTemplates();
   const [searchQuery, setSearchQuery] = useState("");
+  const [previewTemplate, setPreviewTemplate] = useState(null);
 
   useEffect(() => {
     fetchTemp();
@@ -60,10 +61,18 @@ const TemplatesList = ({ handleTemplate }) => {
                 exit={{ opacity: 0, scale: 0.95 }}
                 className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 mb-3 hover:shadow-lg dark:hover:shadow-primary-900/10 hover:border-primary-100 dark:hover:border-primary-800 transition-all group relative overflow-hidden border-l-4 border-l-primary-500"
               >
-                <div className="absolute top-0 right-0 p-1">
+                <div className="absolute top-0 right-0 p-1 flex gap-1">
+                  <button 
+                    onClick={() => setPreviewTemplate(template)}
+                    className="p-1.5 text-slate-300 dark:text-slate-600 hover:text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                    title="Preview Template"
+                  >
+                    <Eye size={14} />
+                  </button>
                   <button 
                     onClick={() => handleDelete(template._id)}
                     className="p-1.5 text-slate-300 dark:text-slate-600 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                    title="Delete Template"
                   >
                     <Trash2 size={14} />
                   </button>
@@ -99,6 +108,73 @@ const TemplatesList = ({ handleTemplate }) => {
           )}
         </div>
       </div>
+      {/* Preview Modal */}
+      <AnimatePresence>
+        {previewTemplate && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              className="bg-white dark:bg-slate-900 w-full max-w-2xl max-h-[85vh] rounded-[2rem] shadow-2xl flex flex-col overflow-hidden border border-slate-200 dark:border-slate-800"
+            >
+              <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between shrink-0 bg-slate-50 dark:bg-slate-800/50">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-xl text-primary-600 dark:text-primary-400">
+                    <FileText size={20} />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-slate-800 dark:text-white leading-tight">
+                      {previewTemplate.subject}
+                    </h3>
+                    <p className="text-xs text-slate-500 font-medium">Template Preview</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setPreviewTemplate(null)}
+                  className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-colors"
+                >
+                   <X size={20} />
+                </button>
+              </div>
+
+              <div className="p-6 overflow-y-auto custom-scrollbar flex-1 text-slate-700 dark:text-slate-300">
+                <div className="ql-snow">
+                  <div 
+                    className="ql-editor p-0" 
+                    dangerouslySetInnerHTML={{ __html: previewTemplate.body }} 
+                  />
+                </div>
+              </div>
+
+              <div className="p-6 border-t border-slate-100 dark:border-slate-800 shrink-0 bg-slate-50 dark:bg-slate-800/50 flex justify-end gap-3">
+                <button
+                   onClick={() => setPreviewTemplate(null)}
+                   className="px-6 py-2.5 rounded-xl font-bold text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                >
+                  Close
+                </button>
+                <button
+                   onClick={() => {
+                     handleTemplate(previewTemplate);
+                     setPreviewTemplate(null);
+                   }}
+                   className="flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm text-white bg-primary-500 hover:bg-primary-600 shadow-lg shadow-primary-500/20 transition-all active:scale-95"
+                >
+                  <CheckCircle2 size={16} />
+                  Use This Template
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <ToastContainer />
     </div>
   );
