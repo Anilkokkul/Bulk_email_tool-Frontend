@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useFormik } from "formik";
+import { useForm } from "react-hook-form";
 import { instance } from "../App";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,51 +9,71 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Send, User, BookOpen, Trash2, Info, Sparkles, X, Mail } from "lucide-react";
 
 const BulkEmails = (props) => {
-  const [list, setList] = useState(props.userList.emails || []);
-  const [template, setTemplate] = useState(props.template || {});
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
 
-  const initialValues = {
-    recipients: list || [],
-    subject: template.subject || "",
-    template: template.body || "",
+  const {
+    register,
+    handleSubmit,
+    setValue: setFieldValue,
+    watch,
+    reset,
+    formState: { isSubmitting }
+  } = useForm({
+    defaultValues: {
+      recipients: props.userList?.emails || [],
+      subject: props.template?.subject || "",
+      template: props.template?.body || "",
+    }
+  });
+
+  const values = watch(); // Mimics Formik's values object
+
+  const onSubmit = async (data) => {
+    if (data.recipients.length > 50) {
+      toast.error("Demo app limit: Maximum 50 recipients allowed per campaign.", { position: "top-center" });
+      return;
+    }
+    try {
+      const response = await instance.post("/bulk-email-sending", data);
+      toast.success(response.data.message, { position: "top-center" });
+      reset();
+      props.handleClear();
+      if (props.onEmailSent) {
+        props.onEmailSent();
+      }
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "Failed to send emails";
+      toast.warn(errorMessage, { position: "top-center" });
+    }
   };
 
+  // Inject updated lists cleanly without wiping out existing manual emails
   useEffect(() => {
-    let importedEmails = props.userList.emails || [];
-    if (importedEmails.length > 50) {
-      toast.warn("Imported list truncated to 50 recipients (Demo limit)", { position: "top-center" });
-      importedEmails = importedEmails.slice(0, 50);
+    let importedEmails = props.userList?.emails || [];
+    if (importedEmails.length > 0) {
+      if (importedEmails.length > 50) {
+        toast.warn("Imported list truncated to 50 recipients (Demo limit)", { position: "top-center" });
+        importedEmails = importedEmails.slice(0, 50);
+      }
+      const currentEmails = values.recipients || [];
+      const newEmails = importedEmails.filter(e => !currentEmails.includes(e));
+      
+      if (newEmails.length > 0) {
+        setFieldValue("recipients", [...currentEmails, ...newEmails].slice(0, 50));
+      }
     }
-    setList(importedEmails);
-    setTemplate(props.template || {});
-  }, [props]);
+  }, [props.userList]); // intentionally excluding values.recipients to avoid loops
 
-  const { values, handleChange, handleBlur, handleSubmit, isSubmitting, resetForm, setFieldValue } = useFormik({
-    enableReinitialize: true,
-    initialValues: initialValues,
-    onSubmit: async (values) => {
-      if (values.recipients.length > 50) {
-        toast.error("Demo app limit: Maximum 50 recipients allowed per campaign.", { position: "top-center" });
-        return;
-      }
-      try {
-        const response = await instance.post("/bulk-email-sending", values);
-        toast.success(response.data.message, { position: "top-center" });
-        resetForm();
-        setList([]);
-        setTemplate({});
-        props.handleClear();
-        if (props.onEmailSent) {
-          props.onEmailSent();
-        }
-      } catch (error) {
-        const errorMessage = error.response?.data?.message || "Failed to send emails";
-        toast.warn(errorMessage, { position: "top-center" });
-      }
-    },
-  });
+  // Inject selected templates dynamically without resetting recipients
+  useEffect(() => {
+    if (props.template?.subject) {
+      setFieldValue("subject", props.template.subject);
+    }
+    if (props.template?.body) {
+      setFieldValue("template", props.template.body);
+    }
+  }, [props.template]);
 
   const addRecipient = (inputEmailTxt) => {
     const rawEmails = inputEmailTxt.split(/[,;\s]+/).map(e => e.trim()).filter(e => e);
@@ -140,7 +160,7 @@ const BulkEmails = (props) => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6 flex-1 flex flex-col min-h-0">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 flex-1 flex flex-col min-h-0">
         <div className="grid grid-cols-1 gap-6">
           {/* Enhanced Recipients Multi-select */}
           <div className="space-y-2">
@@ -212,12 +232,9 @@ const BulkEmails = (props) => {
             </label>
             <input
               type="text"
-              name="subject"
               className="input-premium py-3 text-sm font-medium shadow-sm bg-white dark:bg-slate-900 dark:border-slate-800 dark:text-white"
               placeholder="e.g., Exclusive 20% Discount Inside!"
-              value={values.subject}
-              onChange={handleChange}
-              onBlur={handleBlur}
+              {...register("subject")}
             />
           </div>
         </div>
@@ -232,11 +249,7 @@ const BulkEmails = (props) => {
               formats={formats}
               className="flex-1 bg-white dark:bg-slate-900 h-full custom-quill dark:text-slate-200"
               placeholder="Start typing your masterpiece..."
-              onChange={(content) =>
-                handleChange({
-                  target: { name: "template", value: content },
-                })
-              }
+              onChange={(content) => setFieldValue("template", content)}
             />
           </div>
         </div>
@@ -245,7 +258,7 @@ const BulkEmails = (props) => {
           <button
             type="button"
             onClick={() => {
-              resetForm();
+              reset();
               props.handleClear();
               setFieldValue("recipients", []);
             }}
