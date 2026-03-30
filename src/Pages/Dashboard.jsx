@@ -32,7 +32,7 @@ const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [dashboardStats, setDashboardStats] = useState(null);
   const [history, setHistory] = useState([]);
-
+  console.log("history", history)
   const fetchDashboardData = () => {
     instance.get("/api/history/stats")
       .then((res) => setDashboardStats(res.data))
@@ -215,6 +215,26 @@ const Dashboard = () => {
                                 <div className="text-center">
                                   <div className="text-xs text-slate-500">Accepted</div>
                                   <div className="font-bold text-emerald-600">{item.acceptedCount}</div>
+                                </div>
+                                <div className="text-center relative group cursor-pointer">
+                                  <div className="text-xs text-slate-500">Rejected</div>
+                                  <div className={`font-bold ${item.rejectedCount > 0 ? "text-red-500" : "text-slate-500"}`}>{item.rejectedCount || 0}</div>
+                                  
+                                  {/* Tooltip */}
+                                  {item.bouncedDetails && item.bouncedDetails.length > 0 && (
+                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-sm p-3 bg-slate-900 border border-slate-700 text-white text-xs rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 text-left pointer-events-none">
+                                      <div className="font-bold mb-2 border-b border-slate-700 pb-1 text-red-400">Bounced Details</div>
+                                      <ul className="max-h-40 overflow-y-auto custom-scrollbar pr-2 space-y-2">
+                                        {item.bouncedDetails.map((bounce, i) => (
+                                          <li key={i} className="flex flex-col">
+                                            <span className="font-semibold">{bounce.email}</span>
+                                            <span className="text-slate-400 text-[10px] italic">{bounce.reason}</span>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
+                                    </div>
+                                  )}
                                 </div>
                                 <div className="text-center">
                                   <div className="text-xs text-slate-500">Status</div>
