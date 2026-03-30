@@ -33,6 +33,16 @@ const Dashboard = () => {
   const [dashboardStats, setDashboardStats] = useState(null);
   const [history, setHistory] = useState([]);
 
+  const fetchDashboardData = () => {
+    instance.get("/api/history/stats")
+      .then((res) => setDashboardStats(res.data))
+      .catch((err) => console.error(err));
+
+    instance.get("/api/history")
+      .then((res) => setHistory(res.data))
+      .catch((err) => console.error(err));
+  };
+
   useEffect(() => {
     instance.get("/user")
       .then((response) => {
@@ -43,13 +53,7 @@ const Dashboard = () => {
         navigate("/login");
       });
 
-    instance.get("/api/history/stats")
-      .then((res) => setDashboardStats(res.data))
-      .catch((err) => console.error(err));
-
-    instance.get("/api/history")
-      .then((res) => setHistory(res.data))
-      .catch((err) => console.error(err));
+    fetchDashboardData();
   }, [navigate]);
   const handleLogout = () => {
     instance
@@ -233,6 +237,7 @@ const Dashboard = () => {
                       userList={list}
                       template={template}
                       handleClear={() => { setList([]); setTemplate({}); }}
+                      onEmailSent={fetchDashboardData}
                     />
                   )}
                 </div>

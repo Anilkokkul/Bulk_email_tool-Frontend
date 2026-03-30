@@ -1,9 +1,8 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { useFormik } from "formik";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { instance } from "../App";
 import { loginSchema } from "../Schemas/userValidationSchema";
-import Home from "./Home";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,44 +11,49 @@ import { Lock, Mail as MailIcon, ArrowLeft } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
-  const initialValues = {
-    email: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset
+  } = useForm({
+    resolver: yupResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    }
+  });
+
+  const onSubmit = async (values) => {
+    try {
+      await instance.post("/login", values);
+      toast.success("User logged in Successfully", {
+        position: "top-center",
+      });
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+      const errorMessage = error.response?.data?.message || "Something went wrong";
+      toast.warn(errorMessage, {
+        position: "top-center",
+      });
+    }
+    reset();
   };
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting } =
-    useFormik({
-      initialValues: initialValues,
-      validationSchema: loginSchema,
-      onSubmit: async (values, { resetForm }) => {
-        try {
-          await instance.post("/login", values);
-          toast.success("User logged in Successfully", {
-            position: "top-center",
-          });
-          setTimeout(() => {
-            navigate("/dashboard");
-          }, 1000);
-        } catch (error) {
-          console.log(error);
-          const errorMessage = error.response?.data?.message || "Something went wrong";
-          toast.warn(errorMessage, {
-            position: "top-center",
-          });
-        }
-        resetForm();
-      },
-    });
+  console.log("errors", errors);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-6 transition-colors duration-300">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md"
       >
         <div className="glass dark:bg-slate-900/60 p-8 rounded-3xl shadow-2xl space-y-8 border border-white/20 dark:border-slate-800/50 relative overflow-hidden">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="absolute top-6 left-6 text-slate-400 dark:text-slate-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center gap-1 text-sm font-medium group"
           >
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
@@ -60,7 +64,7 @@ const Login = () => {
             <p className="text-slate-500 dark:text-slate-400">Please enter your details to sign in</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-2">
               <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1">Email Address</label>
               <div className="relative group">
@@ -71,14 +75,11 @@ const Login = () => {
                   type="email"
                   placeholder="name@example.com"
                   className="input-premium input-with-icon bg-white dark:bg-slate-950 dark:border-slate-800 dark:text-white"
-                  name="email"
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  {...register("email")}
                 />
               </div>
-              {touched.email && errors.email && (
-                <p className="text-xs text-red-500 ml-1">{errors.email}</p>
+              {errors.email && (
+                <p className="text-xs text-red-500 ml-1">{errors.email.message}</p>
               )}
             </div>
 
@@ -97,19 +98,16 @@ const Login = () => {
                   type="password"
                   placeholder="••••••••"
                   className="input-premium input-with-icon bg-white dark:bg-slate-950 dark:border-slate-800 dark:text-white"
-                  name="password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  {...register("password")}
                 />
               </div>
-              {touched.password && errors.password && (
-                <p className="text-xs text-red-500 ml-1">{errors.password}</p>
+              {errors.password && (
+                <p className="text-xs text-red-500 ml-1">{errors.password.message}</p>
               )}
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={isSubmitting}
               className="btn-premium w-full flex justify-center items-center h-12"
             >

@@ -45,6 +45,9 @@ const BulkEmails = (props) => {
         setList([]);
         setTemplate({});
         props.handleClear();
+        if (props.onEmailSent) {
+          props.onEmailSent();
+        }
       } catch (error) {
         const errorMessage = error.response?.data?.message || "Failed to send emails";
         toast.warn(errorMessage, { position: "top-center" });
@@ -52,31 +55,46 @@ const BulkEmails = (props) => {
     },
   });
 
-  const addRecipient = (email) => {
-    const trimmed = email.trim();
-    if (!trimmed) return;
+  const addRecipient = (inputEmailTxt) => {
+    const rawEmails = inputEmailTxt.split(/[,;\s]+/).map(e => e.trim()).filter(e => e);
+    if (rawEmails.length === 0) return;
 
-    if (values.recipients.length >= 50) {
-      toast.warn("Demo limit: Maximum 50 recipients allowed.", { position: "bottom-right", autoClose: 3000 });
-      setInputValue("");
-      return;
-    }
-
-    // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(trimmed)) {
-      toast.warn(`Invalid email: ${trimmed}`, { position: "bottom-right", autoClose: 2000 });
-      return;
-    }
+    let validEmails = [];
+    
+    rawEmails.forEach(email => {
+      if (!emailRegex.test(email)) {
+        toast.warn(`Invalid email skipped: ${email}`, { position: "bottom-right", autoClose: 2000 });
+      } else if (!values.recipients.includes(email) && !validEmails.includes(email)) {
+        validEmails.push(email);
+      }
+    });
 
-    if (!values.recipients.includes(trimmed)) {
-      setFieldValue("recipients", [...values.recipients, trimmed]);
+    if (validEmails.length > 0) {
+      const newTotal = values.recipients.length + validEmails.length;
+      if (newTotal > 50) {
+        toast.warn("Demo limit: Maximum 50 recipients allowed.", { position: "bottom-right", autoClose: 3000 });
+        const allowedCount = 50 - values.recipients.length;
+        if (allowedCount > 0) {
+          setFieldValue("recipients", [...values.recipients, ...validEmails.slice(0, allowedCount)]);
+        }
+      } else {
+        setFieldValue("recipients", [...values.recipients, ...validEmails]);
+      }
     }
     setInputValue("");
   };
 
   const removeRecipient = (emailToRemove) => {
     setFieldValue("recipients", values.recipients.filter(e => e !== emailToRemove));
+  };
+
+  const editRecipient = (emailToEdit) => {
+    removeRecipient(emailToEdit);
+    setInputValue(emailToEdit);
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
   };
 
   const handleKeyDown = (e) => {
@@ -147,7 +165,8 @@ const BulkEmails = (props) => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="flex items-center gap-1.5 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-3 py-1.5 rounded-xl border border-primary-100 dark:border-primary-800 text-xs font-bold group"
+                    onClick={() => editRecipient(email)}
+                    className="flex items-center gap-1.5 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-3 py-1.5 rounded-xl border border-primary-100 dark:border-primary-800 text-xs font-bold group cursor-pointer hover:bg-primary-100 dark:hover:bg-primary-800/50"
                   >
                     <Mail size={12} className="text-primary-400 dark:text-primary-500" />
                     {email}
