@@ -1,5 +1,9 @@
 # Getting Started with Create React App
 
+## Backend Repository
+
+Backend GitHub repository: https://github.com/Anilkokkul/Bulk_email_tool-backend
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
